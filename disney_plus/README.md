@@ -1,16 +1,44 @@
-# How to clone UI Disney Plus
+# Disney+ UI Clone
 
-Hello there!
+Learn how to recreate the popular Disney+ home page UI with Flutter. Use PageView controllers with smoothie animations to create a carousel.
 
-In this post, we are going to show you how to clone the UI of Disney Plus.
+## What are you going to build?
 
-The final design will be something like this:
+In this occation, we are going to lean how to recreate the Disney+ home page UI in Flutter. Disney+ has more than 100M downloads in PlayStore and Apple Store. Its UI has many carousel of movies and a big carousel of new movies which is design to capture user's attention. We are going to see many widgets and you can reuse in another apps!
 
-![Source image](/images/original-min.png)
+## What will you learn?
+
+- Add local images
+- AppBar
+- BottomNavigationBar
+- Column
+- CircleAvatar
+- PageView
+- AnimatedContainer
+- ListView
+
+## Technologies Used
+
+- Flutter
+
+## Requirements
+
+- Installed Flutter / Dart
+- Basic Flutter knowledge
+
+## Applicable Roles
+
+- Front-end developer
+- Mobile developer
+- UI/UX Designer
+
+At the end, the design will be something like this:
+
+<img src="images/original-min.png" alt="Final design" width="400"/>
 
 Firstly, run command to create a new project:
 
-```
+```cmd
 $ mkdir -p ~/Desktop/DisneyPlus
 $ cd ~/Desktop/DisneyPlus
 flutter create disney_plus
@@ -22,7 +50,7 @@ Let's code it!
 
 Now, we start with easy part: appbar and bottom navigation.
 
-AppBar:
+## AppBar
 
 Generally, we use AppBar to show the title of the page. In this case, we will use an image because it is a logo of Disney Plus.
 
@@ -30,7 +58,7 @@ So, the [AppBar widget](https://api.flutter.dev/flutter/material/AppBar-class.ht
 
 In Flutter, we need to provide the path of the image in `pubspec.yaml` file. So, we need to add the following line in `pubspec.yaml` file:
 
-```
+```yaml
 flutter:
   assets:
     - disney_plus_logo.png
@@ -40,7 +68,7 @@ And then, we need to restart all application because these images will be upload
 
 Once we have the image, we can use it in our app.
 
-```
+```dart
   static const disneyLogo = 'assets/disney_plus_logo.png';
   static const kToolbarHeight = 56.0;
 
@@ -62,7 +90,9 @@ Once we have the image, we can use it in our app.
 
 And it will look like this:
 
-![Source image](/images/disney-plus-1-min.png)
+<img src="images/disney-plus-1-min.png" alt="Logo Disney" width="300"/>
+
+## BottomNavigationBar
 
 And now, let's do the [BottomNavigationBar](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html).
 
@@ -70,7 +100,7 @@ You notice that the bottom navigation has a very thin divider above it. So, We n
 
 Example: if you have something like:
 
-```
+```dart
 Column(
     children: [
         Text('Hello'),
@@ -79,13 +109,13 @@ Column(
 )
 ```
 
-![Source image](/images/disney-plus-2-min.png)
+<img src="images/disney-plus-2-min.png" alt="Column example" width="300"/>
 
 Ok, now ... we will use [BottomNavigationBar](https://api.flutter.dev/flutter/material/BottomNavigationBar-class.html) to show the bottom navigation. It takes an array of [BottomNavigationBarItem](https://api.flutter.dev/flutter/material/BottomNavigationBarItem-class.html) as its argument.
 
 It will be something like this:
 
-```
+```dart
 Column(
     children: [
     const Divider(color: Colors.white12, height: 0.5, thickness: 0.5),
@@ -98,7 +128,7 @@ Column(
 
 Besides `items`, we need to set some important properties. Inside BottomNavigationBar, there are three properties:
 
-```
+```dart
 type: BottomNavigationBarType.fixed,
 backgroundColor: Colors.transparent,
 elevation: 0
@@ -110,7 +140,7 @@ elevation: 0
 
 Each BottomNavigationBarItem has a `icon` and `title` property and will be something like this:
 
-```
+```dart
 BottomNavigationBarItem(
     icon: Icon(Icons.home),
     label: 'Home',
@@ -119,7 +149,7 @@ BottomNavigationBarItem(
 
 The entire bottom navigation will be:
 
-```
+```dart
   Widget bottomNavigationBar() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -169,7 +199,7 @@ To achieve the desired result, we need to change the icon to a image.
 
 Affortunatly, `icon` property receive a `Widget` as its argument. We need to crete a `CircleAvatar` or .. two `CircleAvatar` to achieve this.
 
-```
+```dart
 CircleAvatar(
     backgroundColor: Colors.white,
     radius: 16,
@@ -185,7 +215,7 @@ CircleAvatar(
 The first CircleAvatar will be used to show a big white circle. And the second CircleAvatar will be used to show the image of the user.
 The only reason there are two of them is because we want to make the image of the user to be a little bit smaller than the white circle.
 
-```
+```dart
   Widget bottomNavigationBar() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -232,7 +262,9 @@ The only reason there are two of them is because we want to make the image of th
 
 Now, we have a perfect bottom navigation.
 
-![Source image](/images/disney-plus-3-min.png)
+<img src="images/disney-plus-3-min.png" alt="Bottom bar" width="300"/>
+
+## Carousel
 
 Let's deep dive into the body of the app.
 
@@ -244,7 +276,7 @@ Most of widget which have movement will have a `controller` as their argument.
 
 We are going to work with a local and fixed list of images:
 
-```
+```dart
 List<String> images = [
   "https://d23.com/app/uploads/2019/10/00-toy-story-4-az.jpg",
   "https://d23.com/app/uploads/2019/09/1-endgame-az.jpg",
@@ -255,7 +287,7 @@ List<String> images = [
 
 And this is carousel:
 
-```
+```dart
 PageView.builder(
   controller: _pageController,
   itemCount: images.length,
@@ -278,14 +310,14 @@ PageView.builder(
 
 If we execute this code, we will see something like this:
 
-![Source image](/images/disney-plus-4-min.png)
+<img src="images/disney-plus-4-min.png" alt="Carousel without animations" width="300"/>
 
 Hmmmm.... something doesn't look right.
 
 Alright, let's do this. We need to add some margin and make the image bigger. To achieve that, we need to change the `itemBuilder` function. 
 But before that, we need to get the current page using `onPageChanged` function.
 
-```
+```dart
 onPageChanged: (page) => setState(() => activePage = page)
 ```
 
@@ -293,7 +325,7 @@ onPageChanged: (page) => setState(() => activePage = page)
 
 Now ... we can change the `itemBuilder` function:
 
-```
+```dart
 itemBuilder: (context, pagePosition) {
   bool isCenterImage = pagePosition == activePage;
   return showImage(images[pagePosition], isCenterImage);
@@ -303,7 +335,7 @@ itemBuilder: (context, pagePosition) {
 If `pagePosition` is equal to `activePage` means that the image is the center of the carousel.
 So, we need to pass a `isCenterImage` variable to know if the image is the center of the carousel to our function `showImage`.
 
-```
+```dart
   AnimatedContainer showImage(String image, bool active) {
     double margin = active ? 0 : 20;
     return AnimatedContainer(
@@ -328,7 +360,7 @@ We will see `AnimatedContainer` in another post, don't worry about it.
 
 So, we have a carousel with images:
 
-```
+```dart
   List<String> images = [
     "https://d23.com/app/uploads/2019/10/00-toy-story-4-az.jpg",
     "https://d23.com/app/uploads/2019/09/1-endgame-az.jpg",
@@ -376,17 +408,17 @@ So, we have a carousel with images:
 
 And it looks like this:
 
-![Source image](/images/disney-plus-5-min.png)
-
----------
+<img src="images/disney-plus-5-min.png" alt="Carousel with animations" width="300"/>
 
 Well, we are in the middle of the post, come on!
+
+## List view of movies
 
 In this part, we are going to create a new Widget to manage the studio's logos. 
 
 We will use a fixed and a local list of images managed by [ListView](https://api.flutter.dev/flutter/widgets/ListView-class.html).
 
-```
+```dart
 static List<String> logos = [
   'https://www.nicepng.com/png/full/23-233994_disney-logo-black-and-white-nba-finals-logo.png',
   'https://www.brandloyalty.com/cache/pixar.8711/pixar-s800x600.png',
@@ -398,7 +430,7 @@ static List<String> logos = [
 
 The code may be pretty simple but we need to take into account some things.
 
-```
+```dart
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -415,7 +447,7 @@ The code may be pretty simple but we need to take into account some things.
 The above code won't work. Why? Because `ListView` widget needs a *height* value. `ListView` has not a `value` property. 
 Instead of that, we need to wrap it using a `SizedBox` and set a *height* property.
 
-```
+```dart
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -436,7 +468,7 @@ Instead of that, we need to wrap it using a `SizedBox` and set a *height* proper
 
 And it looks like this:
 
-![Source image](/images/disney-plus-6-min.png)
+<img src="images/disney-plus-6-min.png" alt="Carousel with logos" width="300"/>
 
 Something doesn't fit here... Ok, we need to adjust images. 
 
@@ -444,7 +476,7 @@ We need to fixed a height and width to insert image inside and some space betewe
 
 Inside `itemBuilder` we are going to build our custom logo.
 
-```
+```dart
   final startColor = const Color.fromARGB(255, 54, 56, 70);
   final endColor = const Color.fromARGB(255, 39, 41, 53);
 
@@ -488,7 +520,7 @@ Finally, we added an `Image` as a child.
 
 Here is full code:
 
-```
+```dart
   static List<String> logos = [
     'https://www.nicepng.com/png/full/23-233994_disney-logo-black-and-white-nba-finals-logo.png',
     'https://www.brandloyalty.com/cache/pixar.8711/pixar-s800x600.png',
@@ -549,14 +581,16 @@ Here is full code:
   }
 ```
 
-------
+<img src="images/disney-plus-7-min.png" alt="Logos" width="300"/>
+
+## Recommended movies for you
 
 Yeah, we almost done. Let's see the next step!.
 
 Well, we have to create a list of movies with horizontal scroll but we know how to do that.
 The only different thing is that above list there is a title. So, we are going to need to use a [Column](https://api.flutter.dev/flutter/widgets/Column-class.html) widget.
 
-```
+```dart
 Column(
   crossAxisAlignment: CrossAxisAlignment.start,
   children: [
@@ -575,7 +609,7 @@ Text widget is used to display text and we can change its style using `style` pr
 
 To do list of movies, it is like before ...
 
-```
+```dart
 SizedBox(
   height: 180,
   child: ListView(
@@ -591,9 +625,9 @@ In this case, `height` is set to 180 to make a portrait view. All is almost the 
 When user scrolls, I want to the list scroll and make an bounce effect. This is why I don't set `physics` property to `ClampingScrollPhysics()`.
 By default, `physics` property is `BouncingScrollPhysics()` which is used to make a bounce effect.
 
-![Source image](/images/disney-plus-7-min.png)
+<img src="images/disney-plus-8-min.png" alt="Logos" width="300"/>
 
-------
+## Final steps
 
 Finally, one more step and we are done, I promise.
 
@@ -605,27 +639,23 @@ To start with, we change the name of the file and widget from `recommended_movie
 
 The only two thing that change are: title and list of movies. So, that are our arguments.
 
-```
+```dart
   const MoviesView({Key? key, required this.title, required this.movies}) : super(key: key);
 ```
 
 So, in the `home_page.dart` file we pass `title` and `movies` arguments to `MoviesView` widget.
 
-```
+```dart
   MoviesView(title: 'Recommended for You', movies: covers),
 ```
 
 To keep it simple, we will use the same list of movies as in the previous step but if you want to see different movies, you can create another list with your favorite movies.
 
-![Source image](/images/disney-plus-8-min.png)
-
------
-
 Well, like I promised before, we are done.
 
 The Home page code will be:
 
-```
+```dart
 @override
 Widget build(BuildContext context) {
   return Scaffold(
@@ -650,8 +680,6 @@ Widget build(BuildContext context) {
 }
 ```
 
-![Source image](/images/disney-plus-final-min.png)
-
-The full code is available on [Github]().
+<img src="images/disney-plus-final-min.png" alt="Movies" width="400"/>
 
 See you next time!
